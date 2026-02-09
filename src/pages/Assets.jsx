@@ -49,7 +49,8 @@ const Assets = () => {
                 search: searchTerm,
                 assetCategory: filterCategory,
                 page: pageNumber,
-                limit: pagination.limit
+                limit: pagination.limit,
+                sortOrder: 'asc'
             };
             const response = await assetService.getAssets(filters);
 
@@ -171,8 +172,8 @@ const Assets = () => {
                             <button
                                 onClick={() => setFilterCategory('')}
                                 className={`flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-xl border transition-all duration-300 ${filterCategory === ''
-                                        ? 'bg-gold-500 border-gold-500 text-black font-bold shadow-md shadow-gold-500/20'
-                                        : 'bg-card/40 border-white/5 text-muted-foreground hover:border-gold-500/30'
+                                    ? 'bg-gold-500 border-gold-500 text-black font-bold shadow-md shadow-gold-500/20'
+                                    : 'bg-card/40 border-white/5 text-muted-foreground hover:border-gold-500/30'
                                     }`}
                             >
                                 <LayoutDashboard className="w-4 h-4" />
@@ -199,8 +200,8 @@ const Assets = () => {
                                         key={key}
                                         onClick={() => setFilterCategory(key)}
                                         className={`flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-xl border transition-all duration-300 ${filterCategory === key
-                                                ? 'bg-gold-500 border-gold-500 text-black font-bold shadow-md shadow-gold-500/20'
-                                                : 'bg-card/40 border-white/5 text-muted-foreground hover:border-gold-500/30'
+                                            ? 'bg-gold-500 border-gold-500 text-black font-bold shadow-md shadow-gold-500/20'
+                                            : 'bg-card/40 border-white/5 text-muted-foreground hover:border-gold-500/30'
                                             }`}
                                     >
                                         <Icon className="w-4 h-4" />
