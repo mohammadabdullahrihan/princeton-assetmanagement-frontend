@@ -246,17 +246,26 @@ const Assets = () => {
 
             {/* Portal Modal for Upload/Edit */}
             {showModal && createPortal(
-                <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-[9999] p-4">
-                    <div className="bg-card border border-border/50 rounded-3xl shadow-2xl max-w-4xl w-full flex flex-col max-h-[90vh] overflow-hidden animate-slide-up">
-                        <div className="p-6 border-b border-border/10 flex justify-between items-center bg-muted/5">
-                            <h2 className="text-xl font-bold flex items-center gap-3">
-                                <div className="p-2 bg-gold-500/10 rounded-lg">
-                                    <Plus className="w-5 h-5 text-gold-500" />
+                <div className="fixed inset-0 bg-black/90 backdrop-blur-xl flex items-center justify-center z-[9999] p-4 transition-all duration-300">
+                    <div className="bg-card/95 border border-gold-500/20 rounded-[2rem] shadow-[0_0_50px_rgba(239,183,8,0.1)] max-w-5xl w-full flex flex-col max-h-[90vh] overflow-hidden animate-zoom-in relative">
+                        {/* Decorative Glow */}
+                        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-gold-500 to-transparent opacity-50"></div>
+
+                        <div className="p-8 border-b border-white/5 flex justify-between items-center bg-gradient-to-b from-white/5 to-transparent">
+                            <h2 className="text-2xl font-black flex items-center gap-4 text-white tracking-tight">
+                                <div className="p-3 bg-gold-500/10 rounded-2xl border border-gold-500/20 shadow-lg shadow-gold-500/5">
+                                    {editingAsset ? <PenTool className="w-6 h-6 text-gold-500" /> : <Plus className="w-6 h-6 text-gold-500" />}
                                 </div>
-                                {editingAsset ? 'Modify Asset Details' : 'Upload New Design'}
+                                <div className="flex flex-col">
+                                    <span className="leading-none mb-1">{editingAsset ? 'Modify Asset' : 'Upload Design'}</span>
+                                    <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold">{editingAsset ? 'Update Metadata & Files' : 'Add to Collection'}</span>
+                                </div>
                             </h2>
-                            <button onClick={() => setShowModal(false)} className="p-2 hover:bg-muted rounded-full transition-colors">
-                                <X className="w-6 h-6" />
+                            <button
+                                onClick={() => setShowModal(false)}
+                                className="p-3 bg-gray-900/50 hover:bg-rose-500/20 hover:text-rose-500 border border-white/5 hover:border-rose-500/30 rounded-full transition-all duration-300 group"
+                            >
+                                <X className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
                             </button>
                         </div>
 
