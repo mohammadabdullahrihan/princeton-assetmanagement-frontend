@@ -1,7 +1,7 @@
 import React from 'react';
 import { assetTypes } from '../../config/assetTypes';
 
-const AssetMetaEditor = ({ category, values, onChange }) => {
+const AssetMetaEditor = ({ category, values, onChange, disabled = false }) => {
     const schema = assetTypes[category]?.metadataSchema || [];
 
     if (schema.length === 0) {
@@ -9,7 +9,7 @@ const AssetMetaEditor = ({ category, values, onChange }) => {
     }
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${disabled ? 'opacity-70 pointer-events-none' : ''}`}>
             {schema.map((field) => (
                 <div key={field.name} className="space-y-1.5">
                     <label className="label text-[10px] uppercase tracking-widest text-muted-foreground font-bold">
@@ -21,7 +21,8 @@ const AssetMetaEditor = ({ category, values, onChange }) => {
                                 type="checkbox"
                                 checked={!!values[field.name]}
                                 onChange={(e) => onChange(field.name, e.target.checked)}
-                                className="w-4 h-4 rounded border-border text-gold-500 focus:ring-gold-500 bg-gray-900"
+                                disabled={disabled}
+                                className="w-4 h-4 rounded border-border text-gold-500 focus:ring-gold-500 bg-gray-900 disabled:opacity-50"
                             />
                             <span className="text-xs font-semibold text-foreground">Enable {field.label}</span>
                         </div>
@@ -30,7 +31,8 @@ const AssetMetaEditor = ({ category, values, onChange }) => {
                             type={field.type}
                             value={values[field.name] || ''}
                             onChange={(e) => onChange(field.name, e.target.value)}
-                            className="input text-xs"
+                            disabled={disabled}
+                            className="input text-xs disabled:opacity-50"
                             placeholder={`Enter ${field.label.toLowerCase()}...`}
                         />
                     )}

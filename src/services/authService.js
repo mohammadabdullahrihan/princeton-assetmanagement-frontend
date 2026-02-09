@@ -48,6 +48,21 @@ export const authService = {
   },
 
   /**
+   * Update user profile
+   */
+  updateUser: async (id, userData) => {
+    const response = await apiClient.put(`/auth/users/${id}`, userData);
+    
+    // Update stored user if it's the current user
+    const storedUser = authService.getStoredUser();
+    if (storedUser && storedUser.id === id) {
+      localStorage.setItem('user', JSON.stringify(response.data.data));
+    }
+    
+    return response.data;
+  },
+
+  /**
    * Change password
    */
   changePassword: async (currentPassword, newPassword) => {

@@ -1,15 +1,19 @@
 import React from 'react';
 import AssetCard from './AssetCard';
-import { useLazyLoadAssets } from '../../hooks/useLazyLoadAssets';
+import { useInfiniteScroll } from '../../hooks/useInfiniteScroll';
 
-const AssetGrid = ({ assets, onAssetClick, isLoading }) => {
-    const { visibleAssets, lastElementRef, hasMore } = useLazyLoadAssets(assets, 20);
+const AssetGrid = ({ assets, onAssetClick, isLoading, hasMore, onLoadMore, isFetchingMore }) => {
+    const { lastElementRef } = useInfiniteScroll(hasMore, isLoading || isFetchingMore, onLoadMore);
 
-    if (isLoading) {
+    if (isLoading && (!assets || assets.length === 0)) {
         return (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-pulse">
                 {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-                    <div key={i} className="card aspect-[3/4] bg-muted/20 border-border/50 rounded-2xl" />
+                    <div key={i} className="h-[320px] bg-white/5 border border-white/5 rounded-[2rem] relative overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                        <div className="absolute bottom-6 left-6 right-6 h-4 bg-white/10 rounded w-3/4 mb-2" />
+                        <div className="absolute bottom-6 left-6 right-6 h-3 bg-white/5 rounded w-1/2" />
+                    </div>
                 ))}
             </div>
         );
@@ -32,10 +36,15 @@ const AssetGrid = ({ assets, onAssetClick, isLoading }) => {
     return (
         <div className="space-y-8">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {visibleAssets.map((asset, index) => {
-                    const isLast = visibleAssets.length === index + 1;
+                {assets.map((asset, index) => {
+                    const isLast = assets.length === index + 1;
                     return (
-                        <div key={asset._id} ref={isLast ? lastElementRef : null}>
+                        <div
+                            key={asset._id}
+                            ref={isLast ? lastElementRef : null}
+                            className="animate-slide-up-subtle opacity-0"
+                            style={{ animationDelay: `${(index % 8) * 100}ms` }}
+                        >
                             <AssetCard
                                 asset={asset}
                                 onClick={onAssetClick}
@@ -51,7 +60,9 @@ const AssetGrid = ({ assets, onAssetClick, isLoading }) => {
                         <div className="w-2 h-2 bg-gold-500 rounded-full animate-bounce" />
                         <div className="w-2 h-2 bg-gold-500 rounded-full animate-bounce delay-75" />
                         <div className="w-2 h-2 bg-gold-500 rounded-full animate-bounce delay-150" />
-                        <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-2">Loading more resources...</span>
+                        <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-2">
+                            {isFetchingMore ? 'Fetching more resources...' : 'Scroll to load more'}
+                        </span>
                     </div>
                 </div>
             )}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { assetService } from '../services/assetService';
 import apiClient from '../services/api';
+import { Skeleton } from '../components/ui/Skeleton';
 import {
     ArrowLeft,
     Calendar,
@@ -44,27 +45,14 @@ const AssetDetails = () => {
         }
     };
 
-    const handleDownload = async () => {
+    const handleDownload = () => {
         if (!activeFile) return;
-        try {
-            // Log to backend
-            await apiClient.post(`/assets/${id}/log-download`, null, {
-                params: {
-                    version: activeFile.version || '1.0',
-                    fileName: activeFile.originalName
-                }
-            });
-        } catch (error) {
-            console.error('Failed to log download');
-        } finally {
-            // Proceed with download regardles of log success to maintain UX
-            const link = document.createElement('a');
-            link.href = activeFile.url;
-            link.download = activeFile.originalName;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
+        const link = document.createElement('a');
+        link.href = activeFile.url;
+        link.download = activeFile.originalName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     };
 
     const handleDelete = async () => {
@@ -80,8 +68,35 @@ const AssetDetails = () => {
 
     if (isLoading) {
         return (
-            <div className="flex items-center justify-center min-h-[60vh]">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gold-500"></div>
+            <div className="max-w-7xl mx-auto space-y-8 animate-pulse">
+                {/* Header Skeleton */}
+                <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-xl bg-white/5" />
+                        <div className="space-y-2">
+                            <div className="w-24 h-4 bg-white/5 rounded" />
+                            <div className="w-48 h-8 bg-white/5 rounded" />
+                        </div>
+                    </div>
+                    <div className="flex gap-3">
+                        <div className="w-32 h-10 bg-white/5 rounded-xl" />
+                        <div className="w-32 h-10 bg-white/5 rounded-xl" />
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <div className="lg:col-span-8 space-y-6">
+                        <div className="aspect-video rounded-3xl bg-white/5 border border-white/5" />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="h-48 rounded-3xl bg-white/5 border border-white/5" />
+                            <div className="h-48 rounded-3xl bg-white/5 border border-white/5" />
+                        </div>
+                    </div>
+                    <div className="lg:col-span-4 space-y-6">
+                        <div className="h-48 rounded-3xl bg-white/5 border border-white/5" />
+                        <div className="h-32 rounded-3xl bg-white/5 border border-white/5" />
+                    </div>
+                </div>
             </div>
         );
     }
@@ -226,30 +241,7 @@ const AssetDetails = () => {
                         </p>
                     </div>
 
-                    <div className="card">
-                        <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-6">Audit Trail</h3>
-                        <div className="space-y-6">
-                            <div className="flex gap-4">
-                                <div className="shrink-0 w-8 h-8 rounded-full bg-gold-500/10 flex items-center justify-center text-gold-500 border border-gold-500/20">
-                                    <User className="w-4 h-4" />
-                                </div>
-                                <div>
-                                    <p className="text-xs font-bold text-foreground">Uploaded by Administrator</p>
-                                    <p className="text-[10px] text-muted-foreground mt-0.5">{new Date(asset.createdAt).toLocaleString()} • VERSION 1.0</p>
-                                </div>
-                            </div>
-                            <div className="flex gap-4 relative">
-                                <div className="shrink-0 w-8 h-8 rounded-full bg-muted/20 flex items-center justify-center text-muted-foreground border border-border/30">
-                                    <Clock className="w-4 h-4" />
-                                </div>
-                                <div className="border-l-2 border-border/10 ml-4 h-8 absolute top-8" />
-                                <div>
-                                    <p className="text-xs font-bold text-muted-foreground">Original creation</p>
-                                    <p className="text-[10px] text-muted-foreground/50 mt-0.5">System recorded entry</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
 
                     {/* Shared Access */}
                     <div className="card bg-muted/5 border-dashed border-border/50">

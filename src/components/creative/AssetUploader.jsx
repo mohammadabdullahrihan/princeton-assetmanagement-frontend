@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { Upload, X, File, Image as ImageIcon } from 'lucide-react';
 
-const AssetUploader = ({ onFilesChange, existingFiles = [] }) => {
+const AssetUploader = ({ onFilesChange, existingFiles = [], disabled = false }) => {
     const [selectedFiles, setSelectedFiles] = useState([]);
 
     const handleFileChange = (e) => {
+        if (disabled) return;
         const files = Array.from(e.target.files);
         setSelectedFiles(prev => [...prev, ...files]);
         onFilesChange([...selectedFiles, ...files]);
     };
 
     const removeFile = (index) => {
+        if (disabled) return;
         const newFiles = [...selectedFiles];
         newFiles.splice(index, 1);
         setSelectedFiles(newFiles);
@@ -18,13 +20,14 @@ const AssetUploader = ({ onFilesChange, existingFiles = [] }) => {
     };
 
     return (
-        <div className="space-y-4">
-            <div className="relative group border-2 border-dashed border-border/50 hover:border-gold-500/50 rounded-2xl p-8 transition-all bg-muted/5">
+        <div className={`space-y-4 ${disabled ? 'opacity-50 pointer-events-none' : ''}`}>
+            <div className={`relative group border-2 border-dashed border-border/50 ${!disabled && 'hover:border-gold-500/50'} rounded-2xl p-8 transition-all bg-muted/5`}>
                 <input
                     type="file"
                     multiple
                     onChange={handleFileChange}
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    disabled={disabled}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
                 />
                 <div className="flex flex-col items-center justify-center text-center space-y-3">
                     <div className="w-12 h-12 bg-gold-500/10 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -38,7 +41,7 @@ const AssetUploader = ({ onFilesChange, existingFiles = [] }) => {
             </div>
 
             {(selectedFiles.length > 0 || existingFiles.length > 0) && (
-                <div className="grid grid-cols-2 gap-3 uppercase tracking-tighter font-bold text-[10px]">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 uppercase tracking-tighter font-bold text-[10px]">
                     {selectedFiles.map((file, idx) => (
                         <div key={idx} className="flex items-center justify-between p-2.5 bg-muted/30 border border-border/50 rounded-lg">
                             <div className="flex items-center gap-2 truncate">

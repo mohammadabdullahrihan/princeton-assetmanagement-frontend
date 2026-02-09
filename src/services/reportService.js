@@ -23,14 +23,6 @@ export const reportService = {
   },
 
   /**
-   * Get system audit logs
-   */
-  getAuditLogs: async () => {
-    const response = await apiClient.get('/reports/logs');
-    return response.data;
-  },
-
-  /**
    * Placeholders for removed reports
    */
   getDepreciationReport: async () => ({ data: { assets: [] } }),
