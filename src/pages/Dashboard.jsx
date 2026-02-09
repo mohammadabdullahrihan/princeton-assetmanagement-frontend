@@ -115,7 +115,7 @@ const Dashboard = () => {
     ];
 
     return (
-        <div className="space-y-8 relative overflow-hidden animate-fade-in">
+        <div className="space-y-8 relative overflow-hidden animate-fade-in lg:-mt-20 md:-mt-10 -mt-12">
             {/* Brand Watermark */}
             <div className="brand-watermark">PRINCETON</div>
 
@@ -125,14 +125,14 @@ const Dashboard = () => {
                 onMouseMove={handleMouseMove}
                 className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-900 via-black to-gray-900 border border-white/5 p-8 md:p-12 shadow-2xl group/hero animate-fade-in-up"
             >
-                {/* Interactive Mouse Glow */}
+                {/* Interactive Mouse Glow
                 <div
                     className="mouse-glow opacity-0 group-hover/hero:opacity-100"
                     style={{
                         left: mousePos.x - 200,
                         top: mousePos.y - 200
                     }}
-                ></div>
+                ></div> */}
 
                 {/* Decorative Elements */}
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gold-500/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 animate-pulse"></div>
