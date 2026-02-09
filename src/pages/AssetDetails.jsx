@@ -19,12 +19,24 @@ import {
 import toast from 'react-hot-toast';
 import { getErrorMessage } from '../services/api';
 
+import ConfirmationModal from '../components/ui/ConfirmationModal';
+
 const AssetDetails = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [asset, setAsset] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [activeFile, setActiveFile] = useState(null);
+
+    // Confirmation Modal State
+    const [confirmModal, setConfirmModal] = useState({
+        isOpen: false,
+        title: '',
+        message: '',
+        description: '',
+        onConfirm: () => { },
+        isLoading: false
+    });
 
     useEffect(() => {
         fetchAssetDetails();
@@ -55,15 +67,29 @@ const AssetDetails = () => {
         document.body.removeChild(link);
     };
 
-    const handleDelete = async () => {
-        if (!window.confirm('Delete this asset and all associated files permanently?')) return;
+    const executeDelete = async () => {
+        setConfirmModal(prev => ({ ...prev, isLoading: true }));
         try {
             await assetService.deleteAsset(id);
             toast.success('Asset removed successfully');
+            setConfirmModal(prev => ({ ...prev, isOpen: false }));
             navigate('/assets');
         } catch (error) {
             toast.error(getErrorMessage(error));
+            setConfirmModal(prev => ({ ...prev, isLoading: false }));
         }
+    };
+
+    const handleDelete = () => {
+        setConfirmModal({
+            isOpen: true,
+            title: 'Delete this Asset?',
+            message: 'This will permanently remove this asset and all its version history. This action cannot be undone.',
+            variant: 'danger',
+            confirmLabel: 'Delete Permanently',
+            isLoading: false,
+            onConfirm: executeDelete
+        });
     };
 
     if (isLoading) {
@@ -265,6 +291,18 @@ const AssetDetails = () => {
                     </div>
                 </div>
             </div>
+
+            <ConfirmationModal
+                isOpen={confirmModal.isOpen}
+                onClose={() => setConfirmModal(prev => ({ ...prev, isOpen: false }))}
+                onConfirm={confirmModal.onConfirm}
+                title={confirmModal.title}
+                message={confirmModal.message}
+                description={confirmModal.description}
+                confirmLabel={confirmModal.confirmLabel}
+                isLoading={confirmModal.isLoading}
+                variant={confirmModal.variant}
+            />
         </div>
     );
 };

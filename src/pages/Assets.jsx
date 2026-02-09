@@ -13,6 +13,8 @@ import AssetGrid from '../components/creative/AssetGrid';
 import UniversalAssetForm from '../components/creative/UniversalAssetForm';
 import { assetTypes } from '../config/assetTypes';
 
+import ConfirmationModal from '../components/ui/ConfirmationModal';
+
 const Assets = () => {
     const { category } = useParams();
     const [searchParams, setSearchParams] = useSearchParams();
@@ -24,6 +26,16 @@ const Assets = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [filterCategory, setFilterCategory] = useState(category || '');
     const [pagination, setPagination] = useState({ page: 1, limit: 12, total: 0, pages: 0 });
+
+    // Confirmation Modal State
+    const [confirmModal, setConfirmModal] = useState({
+        isOpen: false,
+        title: '',
+        message: '',
+        description: '',
+        onConfirm: () => { },
+        isLoading: false
+    });
 
     useEffect(() => {
         setFilterCategory(category || '');
@@ -96,21 +108,31 @@ const Assets = () => {
         }
     };
 
-    const handleDelete = async (id) => {
-        if (!window.confirm('Are you sure you want to permanently delete this asset?')) return;
-
-        setIsLoading(true);
+    const executeDelete = async (id) => {
+        setConfirmModal(prev => ({ ...prev, isLoading: true }));
         try {
             await assetService.deleteAsset(id);
             toast.success('Asset deleted successfully');
             setShowModal(false);
             setEditingAsset(null);
             fetchAssets();
+            setConfirmModal(prev => ({ ...prev, isOpen: false }));
         } catch (error) {
             toast.error(getErrorMessage(error));
-        } finally {
-            setIsLoading(false);
+            setConfirmModal(prev => ({ ...prev, isLoading: false }));
         }
+    };
+
+    const handleDelete = (id) => {
+        setConfirmModal({
+            isOpen: true,
+            title: 'Delete Asset?',
+            message: 'This action cannot be undone. This will permanently delete the asset and all associated files.',
+            variant: 'danger',
+            confirmLabel: 'Yes, Delete',
+            isLoading: false,
+            onConfirm: () => executeDelete(id)
+        });
     };
 
     const handleEdit = (asset) => {
@@ -283,6 +305,18 @@ const Assets = () => {
                 </div>,
                 document.body
             )}
+
+            <ConfirmationModal
+                isOpen={confirmModal.isOpen}
+                onClose={() => setConfirmModal(prev => ({ ...prev, isOpen: false }))}
+                onConfirm={confirmModal.onConfirm}
+                title={confirmModal.title}
+                message={confirmModal.message}
+                description={confirmModal.description}
+                confirmLabel={confirmModal.confirmLabel}
+                isLoading={confirmModal.isLoading}
+                variant={confirmModal.variant}
+            />
         </div>
     );
 };
