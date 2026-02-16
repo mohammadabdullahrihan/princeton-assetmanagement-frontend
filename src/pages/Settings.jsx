@@ -119,8 +119,10 @@ const Settings = () => {
 
                         <div className="text-center md:text-left space-y-4">
                             <div>
-                                <h3 className="text-3xl font-black text-white">Managing Director</h3>
-                                <p className="text-gold-500 font-bold tracking-[0.2em] uppercase text-xs mt-1">{profile.designation} at Princeton Development Ltd.</p>
+                                <h3 className="text-3xl font-black text-white">{profile.name}</h3>
+                                <p className="text-gold-500 font-bold tracking-[0.2em] uppercase text-xs mt-1">Managing Director</p>
+                                <br />
+                                <p className="text-gold-500 font-bold tracking-[0.2em] uppercase text-xs mt-1">Princeton Development Ltd.</p>
                             </div>
                             <div className="flex flex-wrap justify-center md:justify-start gap-3">
                                 <span className="flex items-center gap-2 text-[10px] font-black text-muted-foreground uppercase tracking-widest bg-white/5 px-4 py-2 rounded-xl border border-white/5">
