@@ -23,7 +23,7 @@ const Settings = () => {
     const [profile, setProfile] = useState({
         name: user?.name || 'Md. Nazmul Haider',
         email: user?.email || 'admin@princeton.com',
-        designation: user?.department || 'Managing Director',
+        designation: 'Managing Director',
         phone: user?.phone || '01712050304'
     });
 
@@ -119,7 +119,7 @@ const Settings = () => {
 
                         <div className="text-center md:text-left space-y-4">
                             <div>
-                                <h3 className="text-3xl font-black text-white">{profile.name}</h3>
+                                <h3 className="text-3xl font-black text-white">Managing Director</h3>
                                 <p className="text-gold-500 font-bold tracking-[0.2em] uppercase text-xs mt-1">{profile.designation} at Princeton Development Ltd.</p>
                             </div>
                             <div className="flex flex-wrap justify-center md:justify-start gap-3">
