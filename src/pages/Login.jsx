@@ -50,27 +50,29 @@ const Login = () => {
                 </div>
 
                 <div className="relative z-10 w-full max-w-2xl">
-                    <div className="flex flex-col gap-8">
-                        <div className="relative w-fit">
-                            <div className="relative flex items-center justify-center w-28 h-28 bg-[#0a0a0a] border border-white/10 rounded-[2.4rem] shadow-2xl overflow-hidden p-4">
-                                <img src="/princeton.jpg" alt="Princeton Logo" className="w-full h-full object-contain" />
-                            </div>
-                        </div>
+                    <div className="relative w-fit group cursor-default">
+                        {/* Glow Effect */}
+                        <div className="absolute -inset-1 bg-gradient-to-r from-gold-500/20 to-white/5 rounded-[2.5rem] blur opacity-40 group-hover:opacity-75 transition duration-1000" />
 
-                        <div className="space-y-4">
-                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-500 text-[10px] font-black uppercase tracking-[0.2em]">
-                                <Sparkles className="w-3 h-3" />
+                        {/* Logo Card                            */}
+                        <div className="relative flex items-center justify-center w-full max-w-[800px] h-[200px] lg:h-[320px] bg-[#0a0a0a]/90 backdrop-blur-xl border border-white/10 rounded-[2.4rem] lg:rounded-[3rem] shadow-2xl overflow-hidden p-8 lg:p-12 transition-transform hover:scale-[1.02] duration-500">
+                            <img
+                                src="/princeton.jpg"
+                                alt="Princeton Logo"
+                                className="w-full h-full object-contain filter brightness-110 drop-shadow-2xl"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="space-y-6">
+                        {/* Badge */}
+                        <div className="flex items-center gap-3 animate-fade-in-up">
+                            <div className="h-px w-12 bg-gradient-to-r from-gold-500 to-transparent" />
+                            <span className="text-gold-400 text-[31px] font-bold uppercase text-shadow-sm">
                                 Asset Management System
-                            </div>
-                            <h1 className="text-6xl lg:text-8xl font-black text-white tracking-tighter uppercase leading-[0.85]">
-                                Princeton<br />
-                                <span className="text-gold-500">Development Ltd</span>
-                            </h1>
+                            </span>
                         </div>
 
-                        <p className="text-gray-400 text-lg font-medium leading-relaxed max-w-md opacity-80 border-l-2 border-gold-500/30 pl-6">
-                            Feel The Difference!
-                        </p>
                     </div>
                 </div>
             </div>
