@@ -260,7 +260,7 @@ const Layout = () => {
                 </div>
 
                 {/* Page content */}
-                <main className="p-4 lg:p-8">
+                <main className="p-4 lg:p-8 overflow-x-hidden">
                     <div key={location.pathname} className="animate-fade-in-up">
                         <Outlet />
                     </div>
